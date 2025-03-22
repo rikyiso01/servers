@@ -18,6 +18,8 @@ services:
       PAPER_BUILD: "214"
       # Server config
       DIFFICULTY: "normal"
+      VIEW_DISTANCE: "10"
+      SIMULATION_DISTANCE: "10"
       ONLINE_MODE: "false"
       SERVER_NAME: "Island server"
       MOTD: "Biancaneve e le 7 canne"

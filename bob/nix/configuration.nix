@@ -20,6 +20,12 @@
 
   networking.hostName = "bob";
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 25565 ];
+    allowedUDPPorts = [ 24454 ];
+  };
+
   users.users = {
     riky = {
       isNormalUser = true;
@@ -42,7 +48,7 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  virtualisation.docker.enable=true;
+  virtualisation.docker.enable = true;
 
   system.stateVersion = "24.05";
 }
