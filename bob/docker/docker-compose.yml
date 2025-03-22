@@ -20,6 +20,7 @@ services:
       DIFFICULTY: "normal"
       ONLINE_MODE: "false"
       SERVER_NAME: "Island server"
+      MOTD: "Biancaneve e le 7 canne"
       ICON: "https://raw.githubusercontent.com/rikyiso01/config/refs/heads/main/nix/logo.png"
       MODE: "survival"
       ENABLE_AUTO_PAUSE: "true"
@@ -29,7 +30,6 @@ services:
       EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
       OPS: "${OPS}"
       EXISTING_OPS_FILE: "SYNCHRONIZE"
-      MOTD: "Biancaneve e le 7 canne"
     volumes:
       - ${ROOT_DIR:-.}/minecraft/data:/data
       - ${ROOT_DIR:-.}/minecraft/plugins:/plugins:ro
