@@ -1,0 +1,36 @@
+services:
+  minecraft:
+    image: docker.io/itzg/minecraft-server:2025.3.0-java21-alpine@sha256:0b8fbd0017c616721daaa4427d4965e4af68c77364fc8d59367555c68493effd
+    tty: true
+    stdin_open: true
+    read_only: true
+    tmpfs:
+      - /tmp:exec
+    ports:
+      - "25565:25565"
+      - "24454:24454/udp"
+    environment:
+      UID: "1000"
+      GID: "1000"
+      EULA: "TRUE"
+      TYPE: "PAPER"
+      VERSION: "1.21.4"
+      PAPER_BUILD: "214"
+      # Server config
+      DIFFICULTY: "normal"
+      ONLINE_MODE: "false"
+      SERVER_NAME: "Island server"
+      ICON: "https://raw.githubusercontent.com/rikyiso01/config/refs/heads/main/nix/logo.png"
+      MODE: "survival"
+      ENABLE_AUTO_PAUSE: "true"
+      MAX_TICK_TIME: "-1"
+      ENABLE_WHITELIST: "true"
+      WHITELIST: "${WHITELIST}"
+      EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
+      OPS: "${OPS}"
+      EXISTING_OPS_FILE: "SYNCHRONIZE"
+      MOTD: "Biancaneve e le 7 canne"
+    volumes:
+      - ${ROOT_DIR:-.}/minecraft/data:/data
+      - ${ROOT_DIR:-.}/minecraft/plugins:/plugins:ro
+    # restart: unless-stopped
