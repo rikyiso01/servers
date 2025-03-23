@@ -8,6 +8,7 @@ update-bob:
 
 # update-bob-compose: sync-minecraft-plugins
 update-bob-compose:
+    ssh $BOB mkdir -p ~/minecraft/data
     ROOT_DIR='~' DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml up --build --remove-orphans --detach
     DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml logs -f
 
