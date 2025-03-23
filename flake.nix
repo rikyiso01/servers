@@ -25,6 +25,7 @@
             pkgs.gnumake
             pkgs.nixos-rebuild
             pkgs.rsync
+            pkgs.python313
           ];
         };
       }

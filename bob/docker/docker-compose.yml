@@ -16,23 +16,20 @@ services:
       TYPE: "PAPER"
       VERSION: "1.21.4"
       PAPER_BUILD: "214"
+      MEMORY: "4G"
       # Server config
       DIFFICULTY: "normal"
       VIEW_DISTANCE: "10"
       SIMULATION_DISTANCE: "10"
       ONLINE_MODE: "false"
-      SERVER_NAME: "Island server"
+      SERVER_NAME: "Island SMP"
       MOTD: "Biancaneve e le 7 canne"
       ICON: "https://raw.githubusercontent.com/rikyiso01/config/refs/heads/main/nix/logo.png"
       MODE: "survival"
       ENABLE_AUTO_PAUSE: "true"
       MAX_TICK_TIME: "-1"
+      MODRINTH_PROJECTS: "simple-voice-chat:KuMfGuTv,thizzyz-tree-feller:MoQWr6cI"
       ENABLE_WHITELIST: "true"
-      WHITELIST: "${WHITELIST}"
-      EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
-      OPS: "${OPS}"
-      EXISTING_OPS_FILE: "SYNCHRONIZE"
     volumes:
-      - ${ROOT_DIR:-.}/minecraft/data:/data
-      - ${ROOT_DIR:-.}/minecraft/plugins:/plugins:ro
-    # restart: unless-stopped
+      - ${ROOT_DIR:-/tmp}/minecraft/data:/data
+    restart: unless-stopped
