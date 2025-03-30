@@ -1,12 +1,11 @@
 set dotenv-load
 
 install-bob:
-    cd ./bob/nix/ && nixos-anywhere -- --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@$BOB
+    cd ./bob/nix/ && nixos-anywhere -- --flake .#bob --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@$BOB
 
 update-bob:
-    cd ./bob/nix/ && nixos-rebuild switch --use-remote-sudo --flake .#generic --target-host $BOB --build-host $BOB --verbose
+    cd ./bob/nix/ && nix flake update && nixos-rebuild switch --use-remote-sudo --flake .#bob --target-host $BOB --build-host $BOB --verbose
 
-# update-bob-compose: sync-minecraft-plugins
 update-bob-compose:
     ssh $BOB mkdir -p ~/minecraft/data
     ROOT_DIR='~' DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml up --build --remove-orphans --detach

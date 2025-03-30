@@ -1,6 +1,7 @@
 { modulesPath
 , lib
 , pkgs
+, self
 , ...
 }:
 {
@@ -42,6 +43,8 @@
     };
   };
 
+  programs.tmux.enable = true;
+
   services.openssh = {
     enable = true;
     settings = {
@@ -68,6 +71,19 @@
   security.sudo.wheelNeedsPassword = false;
 
   virtualisation.docker.enable = true;
+
+  system.autoUpgrade = {
+    enable = true;
+    flake = self.outPath;
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "--no-write-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
+  };
 
   system.stateVersion = "24.05";
 }

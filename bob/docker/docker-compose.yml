@@ -1,6 +1,7 @@
 services:
   minecraft:
-    image: docker.io/itzg/minecraft-server:2025.3.0-java21-alpine@sha256:0b8fbd0017c616721daaa4427d4965e4af68c77364fc8d59367555c68493effd
+    image: docker.io/itzg/minecraft-server:java21-alpine
+    container_name: minecraft
     tty: true
     stdin_open: true
     read_only: true
@@ -15,7 +16,6 @@ services:
       EULA: "TRUE"
       TYPE: "PAPER"
       VERSION: "1.21.4"
-      PAPER_BUILD: "214"
       MEMORY: "4G"
       # Server config
       DIFFICULTY: "normal"
@@ -28,8 +28,60 @@ services:
       MODE: "survival"
       ENABLE_AUTO_PAUSE: "true"
       MAX_TICK_TIME: "-1"
-      MODRINTH_PROJECTS: "simple-voice-chat:KuMfGuTv,thizzyz-tree-feller:MoQWr6cI"
+      MODRINTH_PROJECTS: "simple-voice-chat,thizzyz-tree-feller"
       ENABLE_WHITELIST: "true"
     volumes:
-      - ${ROOT_DIR:-/tmp}/minecraft/data:/data
+      - minecraft:/data
     restart: unless-stopped
+
+  backups:
+    image: itzg/mc-backup:latest
+    container_name: backups
+    read_only: true
+    environment:
+      BACKUP_INTERVAL: "2h"
+      RCON_HOST: minecraft
+      SRC_DIR: /data
+      BACKUP_NAME: world
+      BACKUP_METHOD: tar
+      BACKUP_ON_STARTUP: true
+      PAUSE_IF_NO_PLAYERS: true
+      PLAYERS_ONLINE_CHECK_INTERVAL: 5m
+      PRUNE_BACKUPS_COUNT: 30
+      PRUNE_BACKUPS_DAYS: 90
+    volumes:
+      - minecraft:/data:ro
+      - minecraft-backups:/backups
+    restart: unless-stopped
+
+  restarter:
+    image: docker.io/docker:cli
+    init: true
+    container_name: restarter
+    read_only: true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          if [ "$$(date +'%H:%M')" = '02:00' ]; then
+            docker restart minecraft
+          fi
+          sleep 60
+        done
+    restart: unless-stopped
+
+  watchtower:
+    image: docker.io/containrrr/watchtower:latest
+    container_name: watchtower
+    read_only: true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    restart: unless-stopped
+
+volumes:
+  minecraft:
+    name: minecraft
+  minecraft-backups:
+    name: minecraft-backups
