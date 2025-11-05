@@ -1,0 +1,37 @@
+export COMET := "comet"
+export DOCKER_HOST := "ssh://comet.local"
+export COMPOSE_FILE := "compose.yml:compose.override.yml:lan.yml"
+
+[working-directory: "nix"]
+install host:
+    nixos-anywhere -- --flake .#comet --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@{{host}}
+
+[working-directory: "nix"]
+update: && rebuild
+    nix flake update
+
+[working-directory: "nix"]
+rebuild:
+    nixos-rebuild-ng switch --sudo --flake .#comet --target-host $COMET --build-host $COMET --verbose
+
+[working-directory: "docker"]
+update-compose:
+    docker compose up --build --remove-orphans --detach
+    docker compose logs -f
+
+[working-directory: "docker"]
+compose *args:
+    docker compose {{args}}
+
+docker *args:
+    docker {{args}}
+
+[working-directory: "docker"]
+regenerate-wireguard-config:
+    docker compose down -v wireguard
+    docker compose up --build --remove-orphans --detach wireguard
+
+
+download-wireguard-config:
+    docker run --rm -v docker_wireguard:/data:ro alpine sh -c 'tar czf - /data/peer*/peer*.conf' | tar --strip-components 2 -xzC "$XDG_DOWNLOAD_DIR"
+

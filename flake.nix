@@ -23,9 +23,10 @@
             pkgs.nixos-anywhere
             pkgs.just
             pkgs.gnumake
-            pkgs.nixos-rebuild
+            pkgs.nixos-rebuild-ng
             pkgs.rsync
             pkgs.python313
+            pkgs.zstd
           ];
         };
       }

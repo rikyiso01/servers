@@ -1,0 +1,98 @@
+include:
+  - ../../services/mexicanbonora/compose.yml
+
+services:
+  wireguard:
+    container_name: wireguard
+    image: lscr.io/linuxserver/wireguard:latest
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Etc/UTC
+      PEERS: 1
+      SERVERURL: wireguard.domain.com
+    volumes:
+      - wireguard:/config
+    ports:
+      - 51820:51820/udp
+    restart: always
+    read_only: true
+    tmpfs:
+      - /run:exec
+
+  mqtt:
+    image: docker.io/eclipse-mosquitto:latest
+    container_name: mqtt
+    command:
+      - "/usr/sbin/mosquitto"
+      - "-c"
+      - "/mosquitto-no-auth.conf"
+    ports:
+      - "1883:1883"
+    read_only: true
+    restart: always
+    networks:
+      - homeassistant
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - SUBDOMAINS=rikyisola
+      - TOKEN=${DUCKDNS_TOKEN}
+    read_only: true
+    restart: always
+    tmpfs:
+      - /run:exec
+    networks:
+      - duckdns
+
+  caddy:
+    build: ./caddy
+    container_name: caddy
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8443:443/udp"
+    read_only: true
+    volumes:
+      - caddy:/data
+    networks:
+      - homeassistant
+
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    volumes:
+      - homeassistant:/config
+    restart: always
+    networks:
+      - homeassistant
+
+  watchtower:
+    image: docker.io/containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    container_name: watchtower
+    read_only: true
+    restart: always
+    networks:
+      - watchtower
+
+volumes:
+  wireguard:
+    name: wireguard
+  homeassistant:
+    name: homeassistant
+  caddy:
+    name: caddy
+
+networks:
+  duckdns:
+  homeassistant:
+  watchtower:

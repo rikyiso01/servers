@@ -1,24 +1,9 @@
 set dotenv-load
 
-install-bob:
-    cd ./bob/nix/ && nixos-anywhere -- --flake .#bob --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@$BOB
-
-update-bob:
-    cd ./bob/nix/ && nix flake update && nixos-rebuild switch --use-remote-sudo --flake .#bob --target-host $BOB --build-host $BOB --verbose
-
-update-bob-compose:
-    ssh $BOB mkdir -p ~/minecraft/data
-    ROOT_DIR='~' DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml up --build --remove-orphans --detach
-    DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml logs -f
-
-bob-minecraft-console *args:
-    DOCKER_HOST="ssh://$BOB" docker compose --file ./bob/docker/docker-compose.yml exec minecraft rcon-cli {{args}}
-
-bob-compose *args:
-    cd ./bob/docker/ && DOCKER_HOST="ssh://$BOB" docker compose {{args}}
-
-test-bob-installation:
-    nixos-anywhere -- --flake ./bob/nix#vm --vm-test
+mod bob "./bob/justfile"
+mod deck "./deck/justfile"
+mod pi4 "./pi4/justfile"
+mod comet "./comet/justfile"
 
 download-nixos:
     make -C ./images/ nixos-minimal-24.11.715908.7105ae395770-x86_64-linux.iso
@@ -28,10 +13,14 @@ prepare-nixos-installer device: download-nixos
     sudo dd bs=4M if=./images/nixos-minimal-24.11.715908.7105ae395770-x86_64-linux.iso of={{device}} conv=fsync oflag=direct status=progress
     sudo sync
 
-test-bob-minecraft:
-    docker compose --file ./bob/docker/docker-compose.yml up --build --remove-orphans --detach minecraft
-    docker compose --file ./bob/docker/docker-compose.yml logs -f minecraft
+download-nixos-sd:
+    make -C ./images/ nixos-image-sd-card-25.05.810715.879bd460b3d3-aarch64-linux.img.zst
+    cd ./images/ && sha256sum -c ./nixos-image-sd-card-25.05.810715.879bd460b3d3-aarch64-linux.img.zst.sha256
 
-test-bob-minecraft-console *args:
-    docker compose --file ./bob/docker/docker-compose.yml exec minecraft rcon-cli {{args}}
-
+prepare-nixos-sd device: download-nixos-sd
+    unzstd -c ./images/nixos-image-sd-card-25.05.810715.879bd460b3d3-aarch64-linux.img.zst | sudo dd bs=4M of={{device}} conv=fsync oflag=direct iflag=fullblock status=progress
+    sudo mount --mkdir {{device}}p2 /mnt/nixos
+    sudo mkdir -p /mnt/nixos/home/nixos/.ssh
+    ssh-add -L | sudo tee /mnt/nixos/home/nixos/.ssh/authorized_keys
+    sudo chown -R 1000:1000 /mnt/nixos/home/nixos/.ssh
+    sudo umount /mnt/nixos

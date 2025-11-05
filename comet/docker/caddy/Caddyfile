@@ -1,0 +1,4 @@
+rikyisola.duckdns.org http://localhost http://comet.local {
+    reverse_proxy * homeassistant:8123
+}
+

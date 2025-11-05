@@ -1,0 +1,11 @@
+services:
+  mexicanbonora:
+    container_name: mexicanbonora
+    restart: unless-stopped
+    environment:
+      TOKEN: ${MEXICANBONORA_TOKEN}
+    networks:
+      - mexicanbonora
+
+networks:
+  mexicanbonora:

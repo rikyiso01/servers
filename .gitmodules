@@ -1,0 +1,6 @@
+[submodule "services/gitweb/theme"]
+	path = services/gitweb/theme
+	url = https://github.com/kogakure/gitweb-theme.git
+[submodule "services/mexicanbonora"]
+	path = services/mexicanbonora
+	url = https://codeberg.org/rikyiso01/mexicanbonora.git
