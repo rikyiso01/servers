@@ -1,0 +1,7 @@
+procs:
+  update:
+    shell: 'bash "$NIX_CONFIG_FOLDER/nix/update.sh"'
+  server-update:
+    cmd: ["bash", "./update.sh"]
+  backup:
+    shell: 'bash "$NIX_CONFIG_FOLDER/backup/backup.sh" && (bash "$NIX_CONFIG_FOLDER/backup/backup-sync.sh $RESTIC_REPOSITORY $RESTIC_REPOSITORY2" || true)'
