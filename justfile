@@ -1,8 +1,6 @@
 set dotenv-load
 
-mod bob "./bob/justfile"
 mod deck "./deck/justfile"
-mod pi4 "./pi4/justfile"
 mod comet "./comet/justfile"
 
 download-nixos:
