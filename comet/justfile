@@ -1,4 +1,4 @@
-export COMET := "comet"
+export COMET := "comet.local"
 export DOCKER_HOST := "ssh://comet.local"
 export COMPOSE_FILE := "compose.yml:compose.override.yml:lan.yml"
 
