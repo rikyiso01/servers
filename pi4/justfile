@@ -1,0 +1,25 @@
+[working-directory: "nix"]
+install:
+    ssh $PI4 sudo fallocate -l 32G /swapfile
+    ssh $PI4 sudo chmod 0600 /swapfile
+    ssh $PI4 sudo mkswap -U clear /swapfile
+    ssh $PI4 sudo swapon /swapfile
+    nixos-rebuild-ng boot --sudo --flake .#pi4 --target-host $PI4 --build-host $PI4 --verbose
+
+[working-directory: "nix"]
+update:
+    nix flake update && nixos-rebuild-ng switch --sudo --flake .#pi4 --target-host $PI4 --build-host $PI4 --verbose
+
+[working-directory: "nix"]
+rebuild:
+    nixos-rebuild-ng switch --sudo --flake .#pi4 --target-host $PI4 --build-host $PI4 --verbose
+
+[working-directory: "docker"]
+update-compose:
+    DOCKER_HOST="ssh://$PI4" docker compose up --build --remove-orphans --detach
+    DOCKER_HOST="ssh://$PI4" docker compose logs -f
+
+[working-directory: "docker"]
+compose *args:
+    DOCKER_HOST="ssh://$PI4" docker compose {{args}}
+
