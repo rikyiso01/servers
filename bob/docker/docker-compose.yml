@@ -10,6 +10,7 @@ services:
     ports:
       - "25565:25565"
       - "24454:24454/udp"
+      - "7867:7867"
     environment:
       UID: "1000"
       GID: "1000"
@@ -30,6 +31,8 @@ services:
       MAX_TICK_TIME: "-1"
       MODRINTH_PROJECTS: "simple-voice-chat,thizzyz-tree-feller"
       ENABLE_WHITELIST: "true"
+      PLUGINS: |
+        https://github.com/gnmyt/MCDash/releases/download/v1.1.7/MCDash-1.1.7.jar
     volumes:
       - minecraft:/data
     restart: unless-stopped
