@@ -33,5 +33,8 @@ regenerate-wireguard-config:
 
 
 download-wireguard-config:
-    docker run --rm -v docker_wireguard:/data:ro alpine sh -c 'tar czf - /data/peer*/peer*.conf' | tar --strip-components 2 -xzC "$XDG_DOWNLOAD_DIR"
+    docker run --rm -v wireguard:/data:ro alpine sh -c 'tar czf - /data/peer*/peer*.conf'
+
+download-homeassistant-backup:
+    docker run --rm -v homeassistant:/data:ro alpine sh -c 'tar czf - /data/backups'
 
