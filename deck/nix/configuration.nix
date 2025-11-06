@@ -112,6 +112,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
       ];
       extraGroups = [ "wheel" ];
+      packages = with pkgs; [ appimage-run ];
     };
   };
 

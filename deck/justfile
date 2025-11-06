@@ -1,16 +1,16 @@
 export DECK := "deck.local"
 
 [working-directory: "nix"]
-install:
-    nixos-anywhere -- --flake .#deck --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@$DECK
+install host:
+    nixos-anywhere -- --flake .#deck --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@{{host}}
 
 [working-directory: "nix"]
-update:
-    nix flake update && nixos-rebuild switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
+update: && rebuild
+    nix flake update
 
 [working-directory: "nix"]
 rebuild:
-    nixos-rebuild switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
+    nixos-rebuild-ng switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
 
 [working-directory: "kodi"]
 kodi-extensions:
