@@ -22,3 +22,6 @@ prepare-nixos-sd device: download-nixos-sd
     ssh-add -L | sudo tee /mnt/nixos/home/nixos/.ssh/authorized_keys
     sudo chown -R 1000:1000 /mnt/nixos/home/nixos/.ssh
     sudo umount /mnt/nixos
+
+backup:
+    nix develop --command just comet download-homeassistant-backup > homeassistantbackup.tar.gz
