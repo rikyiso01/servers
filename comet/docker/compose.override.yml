@@ -1,11 +1,20 @@
 services:
   mexicanbonora:
     container_name: mexicanbonora
-    restart: unless-stopped
+    restart: always
     environment:
       TOKEN: ${MEXICANBONORA_TOKEN}
     networks:
       - mexicanbonora
 
+  mutechromecastads:
+    container_name: mutechromecastads
+    restart: always
+    environment:
+      CHROMECAST_HOST: ${MUTECHROMECASTADS_CHROMECAST_HOST}
+    networks:
+      - mutechromecastads
+
 networks:
   mexicanbonora:
+  mutechromecastads:
