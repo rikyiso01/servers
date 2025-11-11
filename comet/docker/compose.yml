@@ -41,7 +41,7 @@ services:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
     environment:
-      - SUBDOMAINS=rikyisola
+      - SUBDOMAINS=rikyisola,rikyisola-homeassistant
       - TOKEN=${DUCKDNS_TOKEN}
     read_only: true
     restart: always
@@ -85,6 +85,19 @@ services:
     networks:
       - watchtower
 
+  telegram-notifier:
+    image: docker.io/lorcas/docker-telegram-notifier:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+    read_only: true
+    container_name: telegram-notifier
+    networks:
+      - telegram-notifier
+    environment:
+      - TELEGRAM_NOTIFIER_BOT_TOKEN
+      - TELEGRAM_NOTIFIER_CHAT_ID
+
 volumes:
   wireguard:
     name: wireguard
@@ -97,3 +110,4 @@ networks:
   duckdns:
   homeassistant:
   watchtower:
+  telegram-notifier:
