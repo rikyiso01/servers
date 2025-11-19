@@ -31,9 +31,19 @@ regenerate-wireguard-config:
     docker compose down -v wireguard
     docker compose up --build --remove-orphans --detach wireguard
 
-
 download-wireguard-config:
     docker run --rm -v wireguard:/data:ro alpine sh -c 'tar czf - /data/peer*/peer*.conf'
+
+import-wireguard-config:
+    docker run --rm -v wireguard:/data:ro alpine sh -c 'tar czf - /data/peer*/peer*.conf' | tar -xz --strip-components 2
+    mv ./peer1.conf ./home.conf
+    nmcli c delete home || true
+    nmcli c import type wireguard file ./home.conf
+    nmcli c down home
+    nmcli c modify home connection.autoconnect false
+    password attachment-rm Home home.conf || true
+    password attachment-import Home home.conf ./home.conf
+    rm home.conf
 
 download-homeassistant-backup:
     docker run --rm -v homeassistant:/data:ro alpine sh -c 'tar czf - /data/backups'
