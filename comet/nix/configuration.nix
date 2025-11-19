@@ -31,8 +31,7 @@
       "/var/lib/bluetooth"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
-      "/var/lib/containers"
-      "/etc/containers/networks"
+      "/var/lib/docker"
     ];
     files = [
       "/etc/machine-id"
@@ -57,8 +56,7 @@
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
       ];
-      extraGroups = [ "wheel" "podman" ];
-      packages = with pkgs; [ docker-client ];
+      extraGroups = [ "wheel" "docker" ];
     };
   };
 
@@ -133,18 +131,9 @@
   security.sudo.wheelNeedsPassword = false;
   services.getty.autologinUser = "riky";
 
-  virtualisation.podman = {
+  virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
-    dockerSocket.enable = true;
-    dockerCompat = true;
-  };
-
-  systemd.services = {
-    podman-restart = {
-      enable = true;
-      wantedBy = [ "multi-user.target" ];
-    };
   };
 
   nix.extraOptions = ''experimental-features = nix-command flakes'';
