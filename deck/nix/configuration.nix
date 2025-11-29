@@ -78,7 +78,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "uwsm start -S hyprland-uwsm.desktop";
+        command = "uwsm start hyprland-uwsm.desktop";
         user = "riky";
       };
     };
