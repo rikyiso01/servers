@@ -3,26 +3,6 @@ include:
   - ../../services/mutechromecastads/compose.yml
 
 services:
-  wireguard:
-    container_name: wireguard
-    image: lscr.io/linuxserver/wireguard:latest
-    cap_add:
-      - NET_ADMIN
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Etc/UTC
-      PEERS: 1
-      SERVERURL: rikyisola.duckdns.org
-    volumes:
-      - wireguard:/config
-    ports:
-      - 51820:51820/udp
-    restart: always
-    read_only: true
-    tmpfs:
-      - /run:exec
-
   mqtt:
     image: docker.io/eclipse-mosquitto:latest
     container_name: mqtt
@@ -98,9 +78,18 @@ services:
       - TELEGRAM_NOTIFIER_BOT_TOKEN
       - TELEGRAM_NOTIFIER_CHAT_ID
 
+  autoheal:
+    image: docker.io/willfarrell/autoheal:latest
+    container_name: autoheal
+    restart: always
+    read_only: true
+    network_mode: none
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+
 volumes:
-  wireguard:
-    name: wireguard
   homeassistant:
     name: homeassistant
   caddy:
