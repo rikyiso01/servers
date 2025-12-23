@@ -2,6 +2,7 @@ set dotenv-load
 
 mod deck "./deck/justfile"
 mod comet "./comet/justfile"
+mod hetzner "./hetzner/justfile"
 
 download-nixos:
     make -C ./images/ nixos-minimal-24.11.715908.7105ae395770-x86_64-linux.iso

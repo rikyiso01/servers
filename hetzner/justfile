@@ -1,0 +1,15 @@
+export HETZNER := "135.181.255.132"
+export DOCKER_HOST := "ssh://135.181.255.132"
+
+[working-directory: "nix"]
+install:
+    nixos-anywhere -- --flake .#hetzner --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@$HETZNER
+
+[working-directory: "nix"]
+update: && rebuild
+    nix flake update
+
+[working-directory: "nix"]
+rebuild:
+    nixos-rebuild-ng switch --sudo --flake .#hetzner --target-host $HETZNER --build-host $HETZNER --verbose
+
