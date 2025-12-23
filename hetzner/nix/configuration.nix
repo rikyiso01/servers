@@ -42,13 +42,41 @@
 
 
 
-  networking.hostName = "hetzner";
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
+  networking = {
+    hostName = "hetzner";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [ 53 ];
+    };
+    interfaces = {
+      enp1s0 = {
+        ipv6.addresses = [{
+          address = "2a01:4f9:c013:d8e3::1";
+          prefixLength = 64;
+        }];
+        ipv4 = {
+          addresses = [{
+            address = "135.181.255.132";
+            prefixLength = 32;
+          }];
+          routes = [{
+            address = "172.31.1.1";
+            prefixLength = 32;
+          }];
+        };
+      };
+    };
+    defaultGateway6 = {
+      address = "fe80::1";
+      interface = "enp1s0";
+    };
+    defaultGateway = {
+      address = "172.31.1.1";
+      interface = "enp1s0";
+    };
   };
+
 
   users.users = {
     riky = {
@@ -107,18 +135,18 @@
                        IN      NS      ns2
 
           @            IN      A       135.181.255.132
-                       IN      AAAA    2a01:4f9:c013:d8e3::/64
+                       IN      AAAA    2a01:4f9:c013:d8e3::1
                        IN      MX      10 mail
                        IN      TXT     "v=spf1 mx"
 
           www          IN      A       135.181.255.132
-                       IN      AAAA    2a01:4f9:c013:d8e3::/64
+                       IN      AAAA    2a01:4f9:c013:d8e3::1
 
           ns1          IN      A       135.181.255.132
-                       IN      AAAA    2a01:4f9:c013:d8e3::/64
+                       IN      AAAA    2a01:4f9:c013:d8e3::1
 
           ns2          IN      A       135.181.255.132
-                       IN      AAAA    2a01:4f9:c013:d8e3::/64
+                       IN      AAAA    2a01:4f9:c013:d8e3::1
         '';
       };
     };
