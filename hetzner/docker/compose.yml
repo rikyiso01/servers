@@ -1,0 +1,78 @@
+services:
+  proxy:
+    build: ./caddy
+    container_name: proxy
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    read_only: true
+    volumes:
+      - caddy:/data
+    networks:
+      - tunnel
+
+  tunnel:
+    build: ./tunnel
+    container_name: tunnel
+    environment:
+      AUTHORIZED_KEYS: "$TUNNEL_PUBLIC_KEY"
+      PUID: "1000"
+      PGID: "1000"
+      SSH_HOST_KEY_DIR: /data
+      SSH_USER: "$TUNNEL_USER"
+    volumes:
+      - tunnel:/data
+    ports:
+      - "2222:2222"
+    restart: always
+    networks:
+      - tunnel
+
+  watchtower:
+    image: docker.io/nickfedor/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    container_name: watchtower
+    read_only: true
+    restart: always
+    networks:
+      - watchtower
+
+  telegram-notifier:
+    image: docker.io/lorcas/docker-telegram-notifier:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+    read_only: true
+    container_name: telegram-notifier
+    networks:
+      - telegram-notifier
+    environment:
+      - TELEGRAM_NOTIFIER_BOT_TOKEN
+      - TELEGRAM_NOTIFIER_CHAT_ID
+
+  autoheal:
+    image: docker.io/willfarrell/autoheal:latest
+    container_name: autoheal
+    restart: always
+    read_only: true
+    network_mode: none
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+
+volumes:
+  caddy:
+    name: caddy
+  tunnel:
+    name: tunnel
+
+networks:
+  tunnel:
+  watchtower:
+  telegram-notifier:

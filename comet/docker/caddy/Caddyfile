@@ -2,3 +2,6 @@ rikyisola.duckdns.org rikyisola-homeassistant.duckdns.org http://localhost http:
     reverse_proxy * homeassistant:8123
 }
 
+http://riccardoisola.dev {
+    reverse_proxy * homeassistant:8123
+}

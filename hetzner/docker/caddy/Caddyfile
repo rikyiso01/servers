@@ -1,0 +1,4 @@
+riccardoisola.dev {
+    reverse_proxy * tunnel:8080
+}
+

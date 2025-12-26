@@ -1,5 +1,4 @@
-export HETZNER := "135.181.255.132"
-export DOCKER_HOST := "ssh://135.181.255.132"
+export DOCKER_HOST := "ssh://riccardoisola.dev"
 
 [working-directory: "nix"]
 install:
@@ -15,3 +14,15 @@ rebuild:
 
 ssh *args:
     ssh $HETZNER {{args}}
+
+[working-directory: "docker"]
+update-compose:
+    docker compose up --build --remove-orphans --detach
+    docker compose logs -f
+
+[working-directory: "docker"]
+compose *args:
+    docker compose {{args}}
+
+docker *args:
+    docker {{args}}

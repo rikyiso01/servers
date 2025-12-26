@@ -4,6 +4,13 @@ mod deck "./deck/justfile"
 mod comet "./comet/justfile"
 mod hetzner "./hetzner/justfile"
 
+export HETZNER := "riccardoisola.dev"
+export TUNNEL_PORT := "2222"
+export DECK := "deck.local"
+export COMET := "comet.local"
+export TUNNEL_PUBLIC_KEY := "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrQsF6TsAtOiah3rNAxpw+MExQyHUCJOwFgAXMdSXi8"
+export TUNNEL_USER := "tunnel"
+
 download-nixos:
     make -C ./images/ nixos-minimal-24.11.715908.7105ae395770-x86_64-linux.iso
     cd ./images/ && sha256sum -c ./nixos-minimal-24.11.715908.7105ae395770-x86_64-linux.iso.sha256
