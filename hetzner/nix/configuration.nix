@@ -142,6 +142,12 @@
           www          IN      A       135.181.255.132
                        IN      AAAA    2a01:4f9:c013:d8e3::1
 
+          rpg          IN      A       135.181.255.132
+                       IN      AAAA    2a01:4f9:c013:d8e3::1
+
+          homeassistant          IN      A       135.181.255.132
+                                 IN      AAAA    2a01:4f9:c013:d8e3::1
+
           ns1          IN      A       135.181.255.132
                        IN      AAAA    2a01:4f9:c013:d8e3::1
 

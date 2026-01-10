@@ -1,4 +1,4 @@
-riccardoisola.dev {
+riccardoisola.dev rpg.riccardoisola.dev homeassistant.riccardoisola.dev {
     reverse_proxy * tunnel:8080
 }
 

@@ -1,7 +1,11 @@
-rikyisola.duckdns.org rikyisola-homeassistant.duckdns.org http://localhost http://comet.local {
+rikyisola.duckdns.org rikyisola-homeassistant.duckdns.org http://localhost http://comet.local http://homeassistant.riccardoisola.dev {
     reverse_proxy * homeassistant:8123
 }
 
 http://riccardoisola.dev {
     reverse_proxy * homeassistant:8123
+}
+
+http://rpg.riccardoisola.dev {
+    reverse_proxy * rpg:3000
 }

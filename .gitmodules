@@ -4,3 +4,6 @@
 [submodule "services/mutechromecastads"]
 	path = services/mutechromecastads
 	url = https://codeberg.org/rikyiso01/mutechromecastads.git
+[submodule "services/rpg"]
+	path = services/rpg
+	url = https://codeberg.org/rikyiso01/rpg.git

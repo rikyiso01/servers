@@ -1,6 +1,7 @@
 include:
   - ../../services/mexicanbonora/compose.yml
   - ../../services/mutechromecastads/compose.yml
+  - ../../services/rpg/compose.yml
 
 services:
   mqtt:
@@ -45,6 +46,7 @@ services:
       - caddy:/data
     networks:
       - homeassistant
+      - rpg
 
   homeassistant:
     image: lscr.io/linuxserver/homeassistant:latest
@@ -74,6 +76,8 @@ services:
     container_name: telegram-notifier
     networks:
       - telegram-notifier
+    healthcheck:
+      disable: true
     environment:
       - TELEGRAM_NOTIFIER_BOT_TOKEN
       - TELEGRAM_NOTIFIER_CHAT_ID
