@@ -14,12 +14,12 @@ rebuild:
     nixos-rebuild-ng switch --sudo --flake .#comet --target-host $COMET --build-host $COMET --verbose
 
 [working-directory: "docker"]
-update-compose: update-rpg
+update-compose:
     docker compose up --build --remove-orphans --detach
     docker compose logs -f
 
 [working-directory: "../services/rpg"]
-update-rpg:
+update-rpg: && update-compose
     nix develop --command uv run python main.py
 
 [working-directory: "docker"]
