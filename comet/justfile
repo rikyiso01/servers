@@ -1,5 +1,5 @@
 export DOCKER_HOST := "ssh://comet.local"
-export COMPOSE_FILE := "compose.yml:compose.override.yml:compose.lan.yml:compose.tunnels.yml"
+export COMPOSE_FILE := "compose.yml:compose.override.yml:compose.lan.yml"
 
 [working-directory: "nix"]
 install host:

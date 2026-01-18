@@ -15,14 +15,6 @@ services:
     networks:
       - mutechromecastads
 
-  rpg:
-    container_name: rpg
-    restart: always
-    ports: []
-    networks:
-      - rpg
-
 networks:
   mexicanbonora:
   mutechromecastads:
-  rpg:

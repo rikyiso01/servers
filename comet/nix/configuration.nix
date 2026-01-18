@@ -32,6 +32,7 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/docker"
+      "/etc/NetworkManager/system-connections"
     ];
     files = [
       "/etc/machine-id"
@@ -42,12 +43,14 @@
 
 
 
-  networking.hostName = "comet";
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 5353 ];
+  networking = {
+    hostName = "comet";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [ 53 5353 ];
+    };
+    networkmanager.enable = true;
   };
 
   users.users = {
@@ -56,7 +59,7 @@
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
       ];
-      extraGroups = [ "wheel" "docker" ];
+      extraGroups = [ "wheel" "docker" "networkmanager" ];
     };
   };
 

@@ -1,7 +1,6 @@
 include:
   - ../../services/mexicanbonora/compose.yml
   - ../../services/mutechromecastads/compose.yml
-  - ../../services/rpg/compose.yml
 
 services:
   mqtt:
@@ -46,7 +45,6 @@ services:
       - caddy:/data
     networks:
       - homeassistant
-      - rpg
 
   homeassistant:
     image: lscr.io/linuxserver/homeassistant:latest
@@ -56,6 +54,18 @@ services:
     restart: always
     networks:
       - homeassistant
+
+  porkbun-ddns:
+    image: "mietzen/porkbun-ddns:latest"
+    container_name: porkbun-ddns
+    environment:
+      DOMAIN: "riccardoisola.dev"
+      SUBDOMAINS: "homeassistant"
+      SECRETAPIKEY: "${PORKBUN_SECRET_KEY}"
+      APIKEY: "pk1_b568c6e2d1133113c2810c3a87cb769e17ca898a0c6e60d85579deea9d4e9ba9"
+    restart: always
+    networks:
+      - porkbun-ddns
 
   watchtower:
     image: docker.io/nickfedor/watchtower:latest
@@ -104,3 +114,4 @@ networks:
   homeassistant:
   watchtower:
   telegram-notifier:
+  porkbun-ddns:
