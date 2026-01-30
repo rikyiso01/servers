@@ -9,7 +9,7 @@ services:
     command:
       - "/usr/sbin/mosquitto"
       - "-c"
-      - "/mosquitto-no-auth.conf"
+      - "/mosquitto/config/mosquitto.conf"
     ports:
       - "1883:1883"
     read_only: true
