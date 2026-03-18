@@ -103,11 +103,27 @@ services:
     environment:
       AUTOHEAL_CONTAINER_LABEL: all
 
+  teams:
+    image: docker.io/barjola/microsoft-teams-keepalive:latest
+    container_name: teams
+    restart: "no"
+    init: true
+    networks:
+      - teams
+    volumes:
+      - teams:/data/profile1
+    environment:
+      APP_LANG: "en-US"
+    ports:
+      - "1144:1144"
+
 volumes:
   homeassistant:
     name: homeassistant
   caddy:
     name: caddy
+  teams:
+    name: teams
 
 networks:
   duckdns:
@@ -115,3 +131,4 @@ networks:
   watchtower:
   telegram-notifier:
   porkbun-ddns:
+  teams:
