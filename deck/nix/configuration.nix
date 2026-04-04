@@ -26,6 +26,14 @@
 
   time.timeZone = "Europe/Rome";
 
+  fileSystems = {
+    "/mnt/external" = {
+      device = "/dev/mmcblk0p1";
+      fsType = "ext4";
+      options = [ "nofail" ];
+    };
+  };
+
   services.udev = {
     enable = true;
     extraRules = ''
