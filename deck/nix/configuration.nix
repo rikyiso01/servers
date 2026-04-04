@@ -24,6 +24,8 @@
     size = 32 * 1024;
   }];
 
+  time.timeZone = "Europe/Rome";
+
   services.udev = {
     enable = true;
     extraRules = ''

@@ -17,3 +17,9 @@ kodi-extensions:
 
 keys text:
     ssh deck.local hyprctl -i 0 dispatch sendshortcut ',{{text}},'
+
+cleanup:
+    ssh deck.local nix-collect-garbage -d
+    ssh deck.local sudo nix-collect-garbage -d
+    ssh deck.local nix-store --optimise
+    ssh deck.local sudo nix-store --optimise
