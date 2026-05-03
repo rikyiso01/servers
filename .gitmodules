@@ -3,7 +3,7 @@
 	url = https://codeberg.org/rikyiso01/mexicanbonora.git
 [submodule "services/mutechromecastads"]
 	path = services/mutechromecastads
-	url = https://codeberg.org/rikyiso01/mutechromecastads.git
+	url = ssh://git@codeberg.org/rikyiso01/mutechromecastads.git
 [submodule "services/rpg"]
 	path = services/rpg
 	url = https://codeberg.org/rikyiso01/rpg.git
