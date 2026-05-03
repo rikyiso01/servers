@@ -1,4 +1,4 @@
-export DOCKER_HOST := "ssh://comet.local"
+export DOCKER_HOST := "ssh://homeassistant.riccardoisola.dev"
 export COMPOSE_FILE := "compose.yml:compose.override.yml:compose.lan.yml"
 
 [working-directory: "nix"]
@@ -16,6 +16,7 @@ rebuild:
 [working-directory: "docker"]
 update-compose:
     docker compose up --build --remove-orphans --detach
+    docker compose stop teams
     docker compose logs -f
 
 [working-directory: "../services/rpg"]
