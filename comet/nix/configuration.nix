@@ -159,7 +159,6 @@
     serviceConfig = {
       Type = "oneshot";
       User = "root";
-      RemainAfterExit = true;
     };
   };
   time.timeZone = "Europe/Rome";
