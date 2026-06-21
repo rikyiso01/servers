@@ -1,6 +1,8 @@
 include:
   - ../../services/mexicanbonora/compose.yml
   - ../../services/mutechromecastads/compose.yml
+  - ../../services/jobs-notifier/compose.yml
+  - ../../services/cron/compose.yml
 
 services:
   mqtt:

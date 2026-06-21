@@ -15,6 +15,20 @@ services:
     networks:
       - mutechromecastads
 
+  jobs-notifier:
+    container_name: jobsnotifier
+    restart: no
+    environment:
+      TELEGRAM_TOKEN: "${TELEGRAM_NOTIFIER_BOT_TOKEN}"
+      TELEGRAM_CHAT_ID: "${TELEGRAM_NOTIFIER_CHAT_ID}"
+    networks:
+      - jobsnotifier
+
+volumes:
+  jobs:
+    name: jobs
+
 networks:
   mexicanbonora:
   mutechromecastads:
+  jobsnotifier:

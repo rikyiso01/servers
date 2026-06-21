@@ -7,3 +7,6 @@
 [submodule "services/rpg"]
 	path = services/rpg
 	url = https://codeberg.org/rikyiso01/rpg.git
+[submodule "services/jobs-notifier"]
+	path = services/jobs-notifier
+	url = https://codeberg.org/rikyiso01/jobs-notifier.git

@@ -139,28 +139,6 @@
     autoPrune.enable = true;
   };
 
-  systemd.timers."stop-teams" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      # Alternatively, if you prefer to specify an exact timestamp
-      # like one does in cron, you can use the `OnCalendar` option
-      # to specify a calendar event expression.
-      # Run every Monday at 10:00 AM in the Asia/Kolkata timezone.
-      OnCalendar = "*-*-* 18:00:00 Europe/Rome";
-      Unit = "stop-teams.service";
-    };
-  };
-
-  systemd.services."stop-teams" = {
-    script = ''
-      set -eu
-      ${pkgs.docker}/bin/docker stop teams
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
   time.timeZone = "Europe/Rome";
 
   nix.extraOptions = ''experimental-features = nix-command flakes'';

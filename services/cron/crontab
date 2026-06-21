@@ -1,0 +1,6 @@
+SHELL=/bin/sh
+CRON_TZ=Europe/Rome
+
+
+* 18 * * 1-5 docker stop teams
+* 9 * * * docker start jobsnotifier
