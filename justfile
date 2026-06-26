@@ -33,3 +33,9 @@ prepare-nixos-sd device: download-nixos-sd
 
 backup:
     nix develop --command just comet download-homeassistant-backup > homeassistantbackup.tar.gz
+
+update:
+    nix develop --command just comet update
+    git add comet/nix/flake.lock
+    git commit -m 'update'
+    git push

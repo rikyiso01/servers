@@ -11,7 +11,7 @@ update: && rebuild
 
 [working-directory: "nix"]
 rebuild:
-    nixos-rebuild-ng switch --sudo --flake .#comet --target-host $COMET --build-host $COMET --verbose
+    nixos-rebuild switch --sudo --flake .#comet --target-host $COMET --build-host $COMET --verbose
 
 [working-directory: "docker"]
 update-compose:

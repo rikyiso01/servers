@@ -9,7 +9,7 @@ update: && rebuild
 
 [working-directory: "nix"]
 rebuild:
-    nixos-rebuild-ng switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
+    nixos-rebuild switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
 
 [working-directory: "kodi"]
 kodi-extensions:

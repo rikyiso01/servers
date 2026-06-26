@@ -10,7 +10,7 @@ update: && rebuild
 
 [working-directory: "nix"]
 rebuild:
-    nixos-rebuild-ng switch --sudo --flake .#hetzner --target-host $HETZNER --build-host $HETZNER --verbose
+    nixos-rebuild switch --sudo --flake .#hetzner --target-host $HETZNER --build-host $HETZNER --verbose
 
 ssh *args:
     ssh $HETZNER {{args}}
