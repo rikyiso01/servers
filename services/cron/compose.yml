@@ -4,3 +4,6 @@ services:
     read_only: true
     network_mode: none
     restart: always
+    container_name: cron
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
