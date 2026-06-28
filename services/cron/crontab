@@ -3,4 +3,4 @@ CRON_TZ=Europe/Rome
 
 
 * 18 * * 1-5 docker stop teams > /proc/1/fd/1 2>&1
-* 9 * * * docker start jobsnotifier > /proc/1/fd/1 2>&1
+* 9 * * * docker start jobs-notifier > /proc/1/fd/1 2>&1
