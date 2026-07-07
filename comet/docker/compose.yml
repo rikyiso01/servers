@@ -120,6 +120,8 @@ services:
       APP_LANG: "en-US"
     ports:
       - "1144:1144"
+    labels:
+      - keep
 
 volumes:
   homeassistant:
