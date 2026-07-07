@@ -2,7 +2,7 @@ include:
   - ../../services/mexicanbonora/compose.yml
   - ../../services/mutechromecastads/compose.yml
   - ../../services/jobs-notifier/compose.yml
-  - ../../services/cron/compose.yml
+  - ./cron/compose.yml
 
 services:
   mqtt:
@@ -114,6 +114,8 @@ services:
       - teams
     volumes:
       - teams:/data/profile1
+    tmpfs:
+      - /run
     environment:
       APP_LANG: "en-US"
     ports:

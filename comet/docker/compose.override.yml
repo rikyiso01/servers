@@ -21,6 +21,8 @@ services:
     environment:
       TELEGRAM_TOKEN: "${TELEGRAM_NOTIFIER_BOT_TOKEN}"
       TELEGRAM_CHAT_ID: "${TELEGRAM_NOTIFIER_CHAT_ID}"
+    labels:
+      - keep
     networks:
       - jobs-notifier
 

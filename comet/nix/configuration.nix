@@ -136,7 +136,10 @@
 
   virtualisation.docker = {
     enable = true;
-    autoPrune.enable = true;
+    autoPrune = {
+      enable = true;
+      flags = [ "--filter=label!=keep" ];
+    };
   };
 
   time.timeZone = "Europe/Rome";
