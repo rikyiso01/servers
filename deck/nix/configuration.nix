@@ -34,21 +34,6 @@
     };
   };
 
-  services.udev = {
-    enable = true;
-    extraRules = ''
-      ENV{LIBINPUT_CALIBRATION_MATRIX}="0 1 0 -1 0 1"
-      # Valve USB devices
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="28de", MODE="0666"
-      # Steam Controller udev write access
-      KERNEL=="uinput", SUBSYSTEM=="misc", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
-      # Valve HID devices over USB hidraw
-      KERNEL=="hidraw*", ATTRS{idVendor}=="28de", MODE="0666"
-      # Valve HID devices over bluetooth hidraw
-      KERNEL=="hidraw*", KERNELS=="*28DE:*", MODE="0666"
-    '';
-  };
-
   environment.persistence."/nix/persist" = {
     enable = true; # NB: Defaults to true, not needed
     hideMounts = true;
@@ -65,16 +50,7 @@
       "/etc/ssh_host_ed25519_key"
       "/etc/ssh_host_rsa_key"
     ];
-    # users.riky = {
-    #   directories = [
-    #     # ".local/share/flatpak"
-    #     ".var"
-    #     "retrodeck"
-    #     "Games"
-    #   ];
-    # };
   };
-
 
 
   networking.hostName = "deck";
@@ -94,21 +70,12 @@
     };
   };
 
-  # nix.extraOptions = ''experimental-features = nix-command flakes'';
-
   services.flatpak.enable = true;
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
-  #   config.common.default = "*";
-  # };
 
   services.udisks2.enable = true;
 
   networking.firewall = {
     enable = true;
-    # allowedTCPPorts = [ 25565 ];
-    # allowedUDPPorts = [ 24454 ];
   };
 
   networking.networkmanager.enable = true;
@@ -122,11 +89,8 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
       ];
       extraGroups = [ "wheel" ];
-      packages = with pkgs; [ appimage-run ];
     };
   };
-
-  # programs.tmux.enable = true;
 
   services.openssh = {
     enable = true;
@@ -160,8 +124,6 @@
     };
   };
 
-  # services.logind.lidSwitch = "ignore";
-
   security.sudo.wheelNeedsPassword = false;
 
   programs.fuse.userAllowOther = true;
@@ -171,20 +133,6 @@
   services.tlp = {
     enable = true;
   };
-
-  # virtualisation.docker.enable = true;
-
-  # system.activationScripts = {
-  #   flatpak-setup = {
-  #     text = ''
-  #       ${pkgs.flatpak}/bin/flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  #       ${pkgs.flatpak}/bin/flatpak install -y --system flathub io.github.flattool.Warehouse tv.kodi.Kodi com.github.tchx84.Flatseal page.codeberg.dnkl.foot net.lutris.Lutris com.usebottles.bottles net.retrodeck.retrodeck org.yuzu_emu.yuzu
-  #       ${pkgs.flatpak}/bin/flatpak override --talk-name=org.freedesktop.Flatpak --filesystem=home tv.kodi.Kodi
-  #     '';
-  #     deps = [ "specialfs" ];
-  #   };
-  # };
-
 
   system.autoUpgrade = {
     enable = true;

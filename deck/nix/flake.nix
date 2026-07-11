@@ -11,6 +11,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs =
@@ -19,16 +20,18 @@
     , impermanence
     , home-manager
     , self
+    , nix-flatpak
     , ...
     }:
     {
       # Use this for all other targets
       # nixos-anywhere --flake .#generic --generate-hardware-config nixos-generate-config ./hardware-configuration.nix <hostname>
-      nixosConfigurations.deck = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.deck = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence
+          nix-flatpak.nixosModules.nix-flatpak
           ./configuration.nix
           ./hardware-configuration.nix
           {
@@ -39,9 +42,12 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
-            home-manager.users.riky = import ./home.nix;
+            home-manager.users.riky.imports = [
+              nix-flatpak.homeManagerModules.nix-flatpak
+              ./home.nix
+            ];
+            # home-manager.extraSpecialArgs = { nix-alien = nix-alien.packages.${system}.nix-alien; };
 
-            home-manager.extraSpecialArgs = { impermanence = impermanence.homeManagerModules.impermanence; };
           }
         ];
       };

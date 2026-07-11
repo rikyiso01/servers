@@ -5,12 +5,15 @@
 
   home.packages = with pkgs; [
     nerd-fonts.fira-mono
+    appimage-run
+    file
   ];
 
 
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+    configType = "hyprlang";
     settings = {
       monitor = [
         "eDP-1,800x1280@60,0x0,1,transform,3"
@@ -29,7 +32,7 @@
       ];
       animations = { enabled = "no"; };
       general = { border_size = 0; gaps_in = 0; gaps_out = 0; };
-      input = { kb_options = "caps:swapescape"; };
+      input = { kb_options = "caps:swapescape"; touchdevice = { transform = 3; }; };
     };
   };
 
@@ -241,21 +244,42 @@
     '';
   };
 
+  programs.neovim = {
+    enable = true;
+    withRuby=false;
+    withPython3=false;
+  };
+
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
     config.common.default = "*";
   };
 
-  # home.activation = {
-  #   flatpak-setup = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #     ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  #     ${pkgs.flatpak}/bin/flatpak install -y --user flathub io.github.flattool.Warehouse tv.kodi.Kodi com.github.tchx84.Flatseal page.codeberg.dnkl.foot net.lutris.Lutris com.usebottles.bottles net.retrodeck.retrodeck org.yuzu_emu.yuzu || true
-  #     ${pkgs.flatpak}/bin/flatpak override --user --talk-name=org.freedesktop.Flatpak --filesystem=home tv.kodi.Kodi
-  #     ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
-  #     ${pkgs.flatpak}/bin/flatpak install -y --user gnome-nightly org.gnome.Nautilus.Devel || true
-  #   '';
-  # };
+  services.flatpak = {
+    enable = true;
+    packages = builtins.map (x: { appId = x; origin = "flathub"; }) [
+      "com.github.tchx84.Flatseal"
+      "com.usebottles.bottles"
+      "io.github.flattool.Warehouse"
+      "it.mijorus.gearlever"
+      "net.lutris.Lutris"
+      "net.retrodeck.retrodeck"
+      "org.yuzu_emu.yuzu"
+      "page.codeberg.dnkl.foot"
+      "tv.kodi.Kodi"
+    ]
+    ++
+    [{ appId = "org.gnome.Nautilus.Devel"; origin = "gnome-nightly"; }];
+    remotes = [{ name = "flathub"; location = "https://dl.flathub.org/repo/flathub.flatpakrepo"; }
+      { name = "gnome-nightly"; location = "https://nightly.gnome.org/gnome-nightly.flatpakrepo"; }];
+    overrides = {
+      "tv.kodi.Kodi" = { Context.filesystems = [ "home" ]; "Session Bus Policy" = { "org.freedesktop.Flatpak" = "talk"; "org.freedesktop.NetworkManager" = "talk"; }; };
+    };
+
+    uninstallUnmanaged = true;
+
+  };
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -265,6 +289,7 @@
     "/nix/persist" = {
       directories = [
         ".local/share/flatpak"
+        ".local/share/FasterThanLight"
         ".var"
         "retrodeck"
         "Games"
