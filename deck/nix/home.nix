@@ -29,6 +29,11 @@
         ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer --allow-boost -d 10"
         "$mod, XF86AudioRaiseVolume, exec, sudo ${pkgs.brightnessctl}/bin/brightnessctl set 5%+"
         "$mod, XF86AudioLowerVolume, exec, sudo ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
+        "$mod, Return, exec, pkill wvkbd || ${pkgs.wvkbd}/bin/wvkbd-mobintl"
+        "$mod, down, forcekillactive"
+        "$mod, up, fullscreen, 1"
+        "$mod, left, layoutmsg, cycleprev"
+        "$mod, right, layoutmsg, cyclenext"
       ];
       animations = { enabled = "no"; };
       general = { border_size = 0; gaps_in = 0; gaps_out = 0; };
