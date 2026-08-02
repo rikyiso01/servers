@@ -7,38 +7,18 @@
     nerd-fonts.fira-mono
     appimage-run
     file
+    pamixer
+    brightnessctl
+    wvkbd
+    noctalia
   ];
 
 
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd.enable = true;
-    configType = "hyprlang";
-    settings = {
-      monitor = [
-        "eDP-1,800x1280@60,0x0,1,transform,3"
-        ",preferred,auto,1,mirror,eDP-1"
-      ];
-      exec-once = [
-        "${pkgs.flatpak}/bin/flatpak run io.github.flattool.Warehouse"
-      ];
-      windowrule = [ "match:title .*, maximize on" ];
-      "$mod" = "CAPS";
-      bind = [
-        ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer --allow-boost -i 10"
-        ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer --allow-boost -d 10"
-        "$mod, XF86AudioRaiseVolume, exec, sudo ${pkgs.brightnessctl}/bin/brightnessctl set 5%+"
-        "$mod, XF86AudioLowerVolume, exec, sudo ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
-        "$mod, Return, exec, pkill wvkbd || ${pkgs.wvkbd}/bin/wvkbd-mobintl"
-        "$mod, down, forcekillactive"
-        "$mod, up, fullscreen, 1"
-        "$mod, left, layoutmsg, cycleprev"
-        "$mod, right, layoutmsg, cyclenext"
-      ];
-      animations = { enabled = "no"; };
-      general = { border_size = 0; gaps_in = 0; gaps_out = 0; };
-      input = { kb_options = "caps:swapescape"; touchdevice = { transform = 3; }; };
-    };
+    systemd.enable = false;
+    configType = "lua";
+    extraLuaFiles."config".content = ./hyprland.lua;
   };
 
   programs.waybar = {
@@ -251,8 +231,8 @@
 
   programs.neovim = {
     enable = true;
-    withRuby=false;
-    withPython3=false;
+    withRuby = false;
+    withPython3 = false;
   };
 
   xdg.portal = {
