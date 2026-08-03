@@ -9,6 +9,7 @@
     file
     wvkbd
     noctalia
+    pamixer
   ];
 
 

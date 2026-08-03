@@ -7,6 +7,9 @@ start = ["workspaces"]
 center = ["clock"]
 end = ["volume", "brightness", "battery", "network"]
 
+[audio]
+enable_overdrive = true
+
 [widget.clock]
 format = "%a, %d %b, %H:%M"
 

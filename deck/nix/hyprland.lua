@@ -22,9 +22,9 @@ hl.bind(mainMod .. " + " .. "up", hl.dsp.window.fullscreen({mode="maximized"}))
 
 hl.bind(mainMod .. " + " .. "Return", hl.dsp.exec_cmd("pkill wvkbd || wvkbd-mobintl"))
 
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc.."volume-up"))
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pamixer --allow-boost -i 5"))
 
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc.."volume-down"))
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pamixer --allow-boost -d 5"))
 
 hl.bind(mainMod.." + XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc.."brightness-down"))
 
@@ -80,5 +80,7 @@ end)
 hl.on("hyprland.start", function()
     hl.exec_cmd(launcher)
     hl.exec_cmd("noctalia")
+    hl.exec_cmd("pamixer --allow-boost --set-volume 150")
+    hl.exec_cmd(ipc.."brightness-set 30%")
 end)
 
