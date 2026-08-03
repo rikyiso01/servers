@@ -4,6 +4,8 @@ local mainMod = "CAPS"
 
 local ipc="noctalia msg "
 
+local launcher="flatpak run io.github.flattool.Warehouse"
+
 hl.config({
     animations = {
         enabled = false,
@@ -67,9 +69,16 @@ hl.window_rule({
     maximize=true,
 })
 
+hl.on("window.destroy",function()
+    local clients = hl.get_windows()
+    if #clients == 0 then
+        hl.dispatch(hl.dsp.exec_cmd(launcher))
+    end
+end)
+
 -- Autostart
 hl.on("hyprland.start", function()
-    hl.exec_cmd("flatpak run io.github.flattool.Warehouse")
+    hl.exec_cmd(launcher)
     hl.exec_cmd("noctalia")
 end)
 
