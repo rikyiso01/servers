@@ -1,0 +1,23 @@
+[theme]
+mode = "dark"
+
+[bar.default]
+position = "top"
+start = ["workspaces"]
+center = ["clock"]
+end = ["volume", "brightness", "battery", "network"]
+
+[widget.clock]
+format = "%a, %d %b, %H:%M"
+
+[location]
+auto_locate = true
+
+[calendar]
+enabled = false
+
+[nightlight]
+enabled = true
+force = true
+temperature_day = 3700
+temperature_night = 3700

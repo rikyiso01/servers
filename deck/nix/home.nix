@@ -7,8 +7,6 @@
     nerd-fonts.fira-mono
     appimage-run
     file
-    pamixer
-    brightnessctl
     wvkbd
     noctalia
   ];
@@ -21,8 +19,10 @@
     extraLuaFiles."config".content = ./hyprland.lua;
   };
 
+  xdg.configFile."noctalia/config.toml".source = ./noctalia.toml;
+
   programs.waybar = {
-    enable = true;
+    enable = false;
     systemd.enable = true;
     settings = {
       mainBar = {
@@ -274,7 +274,7 @@
     "/nix/persist" = {
       directories = [
         ".local/share/flatpak"
-        ".local/share/FasterThanLight"
+        ".local/state/noctalia"
         ".var"
         "retrodeck"
         "Games"

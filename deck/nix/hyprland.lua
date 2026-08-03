@@ -2,6 +2,8 @@
 
 local mainMod = "CAPS"
 
+local ipc="noctalia msg "
+
 hl.config({
     animations = {
         enabled = false,
@@ -18,13 +20,13 @@ hl.bind(mainMod .. " + " .. "up", hl.dsp.window.fullscreen({mode="maximized"}))
 
 hl.bind(mainMod .. " + " .. "Return", hl.dsp.exec_cmd("pkill wvkbd || wvkbd-mobintl"))
 
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pamixer -i 5"))
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc.."volume-up"))
 
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pamixer -d 5"))
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc.."volume-down"))
 
-hl.bind(mainMod.." + XF86AudioLowerVolume", hl.dsp.exec_cmd("brightnessctl set 5%-"))
+hl.bind(mainMod.." + XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc.."brightness-down"))
 
-hl.bind(mainMod.." + XF86AudioRaiseVolume", hl.dsp.exec_cmd("brightnessctl set 5%+"))
+hl.bind(mainMod.." + XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc.."brightness-up"))
 
 hl.config({
     general={
@@ -57,8 +59,17 @@ hl.monitor({
     mirror="eDP-1",
 })
 
+hl.window_rule({
+    name="maximize",
+    match={
+        class=".*",
+    },
+    maximize=true,
+})
+
 -- Autostart
 hl.on("hyprland.start", function()
     hl.exec_cmd("flatpak run io.github.flattool.Warehouse")
+    hl.exec_cmd("noctalia")
 end)
 
