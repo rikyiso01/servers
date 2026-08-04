@@ -34,3 +34,5 @@ networks:
   mexicanbonora:
   mutechromecastads:
   jobs-notifier:
+    labels:
+      - keep

@@ -71,13 +71,14 @@ services:
 
   watchtower:
     image: docker.io/nickfedor/watchtower:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     container_name: watchtower
     read_only: true
+    environment:
+      DOCKER_HOST: "tcp://socket-proxy:2375"
     restart: always
     networks:
       - watchtower
+      - socket-proxy
 
   telegram-notifier:
     image: docker.io/lorcas/docker-telegram-notifier:latest
@@ -99,11 +100,11 @@ services:
     container_name: autoheal
     restart: always
     read_only: true
-    network_mode: none
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - socket-proxy
     environment:
       AUTOHEAL_CONTAINER_LABEL: all
+      DOCKER_SOCK: "tcp://socket-proxy:2375"
 
   teams:
     image: docker.io/barjola/microsoft-teams-keepalive:latest
@@ -123,6 +124,44 @@ services:
     labels:
       - keep
 
+  socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+    read_only: true
+    environment:
+      - ALLOW_START=1
+      - ALLOW_STOP=1
+      - ALLOW_RESTARTS=1
+      - ALLOW_PAUSE=1
+      - ALLOW_UNPAUSE=1
+      - AUTH=1
+      - BUILD=1
+      - COMMIT=1
+      - CONFIGS=1
+      - CONTAINERS=1
+      - DISTRIBUTION=1
+      - EXEC=1
+      - IMAGES=1
+      - INFO=1
+      - NETWORKS=1
+      - NODES=1
+      - PLUGINS=1
+      - POST=1
+      - SECRETS=1
+      - SERVICES=1
+      - SESSION=1
+      - SWARM=1
+      - SYSTEM=1
+      - TASKS=1
+      - VOLUMES=1
+    tmpfs:
+      - /run
+    networks:
+      - socket-proxy
+
 volumes:
   homeassistant:
     name: homeassistant
@@ -138,3 +177,5 @@ networks:
   telegram-notifier:
   porkbun-ddns:
   teams:
+  socket-proxy:
+    internal: true
