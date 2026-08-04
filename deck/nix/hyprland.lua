@@ -22,9 +22,9 @@ hl.bind(mainMod .. " + " .. "up", hl.dsp.window.fullscreen({mode="maximized"}))
 
 hl.bind(mainMod .. " + " .. "Return", hl.dsp.exec_cmd("pkill wvkbd || wvkbd-mobintl"))
 
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pamixer --allow-boost -i 5"))
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pamixer --allow-boost -i 10"))
 
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pamixer --allow-boost -d 5"))
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pamixer --allow-boost -d 10"))
 
 hl.bind(mainMod.." + XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc.."brightness-down"))
 

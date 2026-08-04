@@ -24,3 +24,6 @@ enabled = true
 force = true
 temperature_day = 3700
 temperature_night = 3700
+
+[hooks]
+started="pamixer --allow-boost --set-volume 150; noctalia msg brightness-set 30%"
