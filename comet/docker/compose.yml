@@ -128,10 +128,11 @@ services:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: socket-proxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run:/var/run
     restart: always
     read_only: true
     environment:
+      - DOCKER_HOST=/mount/docker.sock
       - ALLOW_START=1
       - ALLOW_STOP=1
       - ALLOW_RESTARTS=1
@@ -157,10 +158,10 @@ services:
       - SYSTEM=1
       - TASKS=1
       - VOLUMES=1
-    tmpfs:
-      - /run
     networks:
       - socket-proxy
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
 volumes:
   homeassistant:
@@ -169,6 +170,7 @@ volumes:
     name: caddy
   teams:
     name: teams
+    external: true
 
 networks:
   duckdns:
