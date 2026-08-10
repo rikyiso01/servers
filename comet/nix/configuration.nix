@@ -32,7 +32,6 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/docker"
-      "/etc/NetworkManager/system-connections"
     ];
     files = [
       "/etc/machine-id"
@@ -50,7 +49,34 @@
       allowedTCPPorts = [ 53 ];
       allowedUDPPorts = [ 53 5353 ];
     };
-    networkmanager.enable = true;
+    useDHCP = false;
+    wireless = {
+      enable = true;
+      secretsFile = "/nix/persist/wireless_secrets";
+      networks = {
+        "Island wifi" = {
+          pskRaw = "ext:psk_home";
+          priority = 2;
+        };
+        "Island wifi 2.4" = {
+          pskRaw = "ext:psk_home_24";
+          priority = 1;
+        };
+      };
+    };
+    interfaces.enp2s0.ipv4.addresses = [{
+      address = "192.168.0.34";
+      prefixLength = 24;
+    }];
+    interfaces.wlp1s0.ipv4.addresses = [{
+      address = "192.168.0.33";
+      prefixLength = 24;
+    }];
+    defaultGateway = {
+      address = "192.168.0.1";
+      interface = "wlp1s0";
+    };
+    nameservers = [ "8.8.8.8" ];
   };
 
   users.users = {
@@ -59,7 +85,7 @@
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
       ];
-      extraGroups = [ "wheel" "docker" "networkmanager" ];
+      extraGroups = [ "wheel" "docker" ];
     };
   };
 
@@ -70,6 +96,7 @@
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
+      MaxStartups = "50:30:100";
     };
     hostKeys = [
       {

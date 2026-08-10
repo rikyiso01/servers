@@ -111,7 +111,7 @@ services:
   teams:
     image: docker.io/barjola/microsoft-teams-keepalive:latest
     container_name: teams
-    restart: "no"
+    restart: "unless-stopped"
     init: true
     networks:
       - teams
