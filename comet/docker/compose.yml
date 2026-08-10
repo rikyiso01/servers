@@ -15,7 +15,7 @@ services:
     ports:
       - "1883:1883"
     read_only: true
-    restart: always
+    restart: unless-stopped
     networks:
       - homeassistant
 
@@ -26,7 +26,7 @@ services:
       - SUBDOMAINS=rikyisola,rikyisola-homeassistant
       - TOKEN=${DUCKDNS_TOKEN}
     read_only: true
-    restart: always
+    restart: unless-stopped
     tmpfs:
       - /run:exec
     networks:
@@ -35,7 +35,7 @@ services:
   caddy:
     build: ./caddy
     container_name: caddy
-    restart: always
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
     ports:
@@ -53,7 +53,7 @@ services:
     container_name: homeassistant
     volumes:
       - homeassistant:/config
-    restart: always
+    restart: unless-stopped
     networks:
       - homeassistant
 
@@ -65,7 +65,7 @@ services:
       SUBDOMAINS: "homeassistant"
       SECRETAPIKEY: "${PORKBUN_SECRET_KEY}"
       APIKEY: "pk1_b568c6e2d1133113c2810c3a87cb769e17ca898a0c6e60d85579deea9d4e9ba9"
-    restart: always
+    restart: unless-stopped
     networks:
       - porkbun-ddns
 
@@ -74,17 +74,18 @@ services:
     container_name: watchtower
     read_only: true
     environment:
-      DOCKER_HOST: "tcp://socket-proxy:2375"
-    restart: always
+      DOCKER_HOST: "unix:///mount/docker.sock"
+    restart: unless-stopped
     networks:
       - watchtower
-      - socket-proxy
+    volumes:
+      - /var/run:/mount:ro
 
   telegram-notifier:
     image: docker.io/lorcas/docker-telegram-notifier:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: always
+    restart: unless-stopped
     read_only: true
     container_name: telegram-notifier
     networks:
@@ -98,13 +99,14 @@ services:
   autoheal:
     image: docker.io/willfarrell/autoheal:latest
     container_name: autoheal
-    restart: always
+    restart: unless-stopped
     read_only: true
-    networks:
-      - socket-proxy
+    network_mode: none
+    volumes:
+      - /var/run:/mount:ro
     environment:
       AUTOHEAL_CONTAINER_LABEL: all
-      DOCKER_SOCK: "tcp://socket-proxy:2375"
+      DOCKER_SOCK: "/mount/docker.sock"
 
   teams:
     image: docker.io/barjola/microsoft-teams-keepalive:latest
@@ -124,45 +126,6 @@ services:
     labels:
       - keep
 
-  socket-proxy:
-    image: lscr.io/linuxserver/socket-proxy:latest
-    container_name: socket-proxy
-    volumes:
-      - /var/run:/var/run
-    restart: always
-    read_only: true
-    environment:
-      - DOCKER_HOST=/mount/docker.sock
-      - ALLOW_START=1
-      - ALLOW_STOP=1
-      - ALLOW_RESTARTS=1
-      - ALLOW_PAUSE=1
-      - ALLOW_UNPAUSE=1
-      - AUTH=1
-      - BUILD=1
-      - COMMIT=1
-      - CONFIGS=1
-      - CONTAINERS=1
-      - DISTRIBUTION=1
-      - EXEC=1
-      - IMAGES=1
-      - INFO=1
-      - NETWORKS=1
-      - NODES=1
-      - PLUGINS=1
-      - POST=1
-      - SECRETS=1
-      - SERVICES=1
-      - SESSION=1
-      - SWARM=1
-      - SYSTEM=1
-      - TASKS=1
-      - VOLUMES=1
-    networks:
-      - socket-proxy
-    labels:
-      - "com.centurylinklabs.watchtower.enable=false"
-
 volumes:
   homeassistant:
     name: homeassistant
@@ -179,5 +142,5 @@ networks:
   telegram-notifier:
   porkbun-ddns:
   teams:
-  socket-proxy:
-    internal: true
+    labels:
+      - keep

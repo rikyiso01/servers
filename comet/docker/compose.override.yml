@@ -1,7 +1,7 @@
 services:
   mexicanbonora:
     container_name: mexicanbonora
-    restart: always
+    restart: unless-stopped
     environment:
       TOKEN: ${MEXICANBONORA_TOKEN}
     networks:
@@ -9,7 +9,7 @@ services:
 
   mutechromecastads:
     container_name: mutechromecastads
-    restart: always
+    restart: unless-stopped
     environment:
       CHROMECAST_HOST: ${MUTECHROMECASTADS_CHROMECAST_HOST}
     networks:

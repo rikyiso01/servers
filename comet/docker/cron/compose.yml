@@ -3,10 +3,11 @@ services:
     build: .
     read_only: true
     init: true
-    networks:
-      - socket-proxy
-    restart: always
+    network_mode: none
+    volumes:
+      - /var/run:/mount:ro
+    restart: unless-stopped
     container_name: cron
     environment:
       TZ: "Europe/Rome"
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "unix:///mount/docker.sock"
