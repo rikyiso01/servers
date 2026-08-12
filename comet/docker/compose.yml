@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     networks:
       - homeassistant
+      - mqtt
 
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
@@ -46,6 +47,7 @@ services:
     volumes:
       - caddy:/data
     networks:
+      - caddy
       - homeassistant
 
   homeassistant:
@@ -137,7 +139,10 @@ volumes:
 
 networks:
   duckdns:
+  caddy:
   homeassistant:
+    internal: true
+  mqtt:
   watchtower:
   telegram-notifier:
   porkbun-ddns:
