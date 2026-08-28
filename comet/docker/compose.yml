@@ -55,6 +55,7 @@ services:
     container_name: homeassistant
     volumes:
       - homeassistant:/config
+      - recordings:/recordings
     restart: unless-stopped
     networks:
       - homeassistant
@@ -131,6 +132,8 @@ services:
 volumes:
   homeassistant:
     name: homeassistant
+  recordings:
+    name: recordings
   caddy:
     name: caddy
   teams:
