@@ -17,6 +17,7 @@
     efiSupport = true;
     efiInstallAsRemovable = true;
     timeoutStyle = "hidden";
+    configurationLimit = 5;
   };
 
   swapDevices = [{
@@ -185,6 +186,17 @@
     dates = "02:00";
     randomizedDelaySec = "45min";
     allowReboot = true;
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = [ "03:00" ];
+  };
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
   };
 
   system.stateVersion = "24.05";
