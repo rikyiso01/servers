@@ -4,11 +4,14 @@ install host:
     nixos-anywhere -- --flake .#deck --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@{{host}}
 
 [working-directory: "nix"]
-update: && rebuild
+update: && rebuild reboot
     nix flake update
 
+reboot:
+    ssh deck.local sudo systemctl reboot
+
 [working-directory: "nix"]
-rebuild:
+rebuild: cleanup
     nixos-rebuild switch --sudo --flake .#deck --target-host $DECK --build-host $DECK --verbose
 
 [working-directory: "kodi"]
