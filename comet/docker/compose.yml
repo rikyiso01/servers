@@ -87,7 +87,7 @@ services:
   telegram-notifier:
     image: docker.io/lorcas/docker-telegram-notifier:latest
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run:/var/run:ro
     restart: unless-stopped
     read_only: true
     container_name: telegram-notifier
