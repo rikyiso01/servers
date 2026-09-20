@@ -19,6 +19,16 @@
     timeoutStyle = "hidden";
     configurationLimit = 5;
   };
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_18.override {
+    argsOverride = rec {
+      src = pkgs.fetchurl {
+        url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+        sha256 = "sha256-0vwEHatOEdlkXjulO+BY+qUrjOKKipfIibssrO4XBGE=";
+      };
+      version = "6.18.50";
+      modDirVersion = "6.18.50";
+    };
+  });
 
   swapDevices = [{
     device = "/nix/swapfile";
