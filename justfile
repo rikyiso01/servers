@@ -3,6 +3,7 @@ set dotenv-load
 mod deck "./deck/justfile"
 mod comet "./comet/justfile"
 mod hetzner "./hetzner/justfile"
+mod bob "./bob/justfile"
 
 export HETZNER := "riccardoisola.dev"
 export TUNNEL_PORT := "2222"

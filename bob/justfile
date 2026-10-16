@@ -1,0 +1,29 @@
+export DOCKER_HOST := "ssh://bob.riccardoisola.dev:2223"
+export COMPOSE_FILE := "compose.yml"
+export BOB := "192.168.1.8"
+
+[working-directory: "nix"]
+install host:
+    nixos-anywhere -- --flake .#bob --generate-hardware-config nixos-generate-config ./hardware-configuration.nix --target-host root@{{host}}
+
+[working-directory: "nix"]
+update: && rebuild
+    nix flake update
+
+[working-directory: "nix"]
+rebuild:
+    nixos-rebuild switch --sudo --flake .#bob --target-host $BOB --build-host $BOB --verbose
+
+[working-directory: "docker"]
+update-compose:
+    docker compose up --build --remove-orphans --detach
+    docker compose stop teams
+    docker compose logs -f
+
+[working-directory: "docker"]
+compose *args:
+    docker compose {{args}}
+
+docker *args:
+    docker {{args}}
+
