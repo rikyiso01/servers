@@ -75,6 +75,7 @@
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPRI8KdIpS8+g0IwxfzmrCBP4m7XWj0KECBz42WkgwsG rikyiso01"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDThjOspFXi40rpfruJkp4uZmbEmIDPS0x4OIIixi5iL gabri@cachy"
       ];
       extraGroups = [ "docker" "nix" ];
     };
